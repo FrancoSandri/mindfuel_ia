@@ -5,6 +5,16 @@
     <title>MindFuel</title>
 </head>
 <body>
-    
+    <div class = "recomendar">
+        <h2>Recomendar tareas</h2>
+            <p>Introduce el nombre de la tarea</p>
+            <form action = "{{url_for('recomendar')}}" method = "post">
+
+                <input type="text" name = "tareas" placeholder="Tarea" required = "required">
+                <button type ="submit" class= "btn btn-primary btn-block btn-large">Recomendar</button>
+
+            </form>
+    </div>
+{{data|safe}}
 </body>
 </html>
