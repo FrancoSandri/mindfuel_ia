@@ -1,10 +1,9 @@
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request,jsonify
 import pandas as pd
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-import pickle
 
 app = Flask(__name__)
 
@@ -51,7 +50,7 @@ def recomendar():
 
         rec_percentages = rec_percentages.sort_values("score", ascending=False)
         rec_percentages = rec_percentages.head(10).merge(tareas, left_index=True, right_on="Id")[["Tareas", "Area"]]
-        return rec_percentages
+        return rec_percentages.to_dict(orient = "records")
 
     # Mostrar la tabla de tareas
     title = request.form.get("tareas", "")
@@ -62,7 +61,7 @@ def recomendar():
     else:
         recomendacion = pd.DataFrame()  # Empty DataFrame if title is too short
 
-    return render_template("index.html", data = recomendacion.to_html(index=False))
+    return jsonify(recomendacion)
 
 if __name__ == "__main__":
     app.run()
