@@ -50,7 +50,7 @@ def recomendar():
 
         rec_percentages = rec_percentages.sort_values("score", ascending=False)
         rec_percentages = rec_percentages.head(10).merge(tareas, left_index=True, right_on="Id")[["Tareas", "Area"]]
-        return rec_percentages.to_dict(orient = "records")
+        return rec_percentages
 
     # Mostrar la tabla de tareas
     title = request.form.get("tareas", "")
@@ -61,7 +61,8 @@ def recomendar():
     else:
         recomendacion = pd.DataFrame()  # Empty DataFrame if title is too short
 
-    return jsonify(recomendacion)
+    recomendacion_data = recomendacion.to_dict(orient='records')
+    return jsonify(recomendacion_data)
 
 if __name__ == "__main__":
     app.run()
