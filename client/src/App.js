@@ -5,22 +5,24 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    console.log(event.target.tareas.value)
     try {
-      const response = await fetch('/recomendar', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ tareas: event.target.tareas.value }),
-      });
+      const formData = new FormData();
+      formData.append('tareas', event.target.tareas.value);
 
-      if (!response.ok) {
-        throw new Error('Error en la solicitud');
+      const response = await fetch('http://127.0.0.1:5000/recomendar', {
+        method: 'POST',
+        body: formData,
+      });
+    
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setRecomendacion(data);
+      } else {
+        console.log('Error:', response.status);
       }
 
-      const data = await response.json();
-      setRecomendacion(data);
     } catch (error) {
       console.error(error);
     }
